@@ -57,6 +57,15 @@ export default {
 					white: '#ffffff',
 					gray: '#f5f5f7',
 					darkgray: '#86868b'
+				},
+				cosmic: {
+					purple: '#9b87f5',
+					deepPurple: '#6E59A5',
+					darkPurple: '#3a1f7a',
+					blue: '#0EA5E9',
+					deepBlue: '#0e76a8',
+					black: '#0c0117',
+					gray: '#2d2a3a'
 				}
 			},
 			fontFamily: {
@@ -87,12 +96,28 @@ export default {
 				'fade-in': {
 					'0%': { opacity: '0', transform: 'translateY(10px)' },
 					'100%': { opacity: '1', transform: 'translateY(0)' }
+				},
+				'float': {
+					'0%, 100%': { transform: 'translateY(0)' },
+					'50%': { transform: 'translateY(-10px)' }
+				},
+				'glow': {
+					'0%, 100%': { 
+						boxShadow: '0 0 5px rgba(155, 135, 245, 0.5), 0 0 10px rgba(155, 135, 245, 0.3)',
+						opacity: '0.8'
+					},
+					'50%': { 
+						boxShadow: '0 0 20px rgba(155, 135, 245, 0.8), 0 0 30px rgba(155, 135, 245, 0.5)',
+						opacity: '1'
+					}
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
-				'fade-in': 'fade-in 0.6s ease-out'
+				'fade-in': 'fade-in 0.6s ease-out',
+				'float': 'float 6s ease-in-out infinite',
+				'glow': 'glow 3s ease-in-out infinite'
 			}
 		}
 	},

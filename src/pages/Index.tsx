@@ -1,3 +1,4 @@
+import React from "react";
 import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
 import ServiceSection from "@/components/ServiceSection";
@@ -7,7 +8,7 @@ import Footer from "@/components/Footer";
 
 const Index = () => {
   return (
-    <div className="min-h-screen w-full bg-white">
+    <div className="min-h-screen w-full bg-white dark:bg-cosmic-black overflow-hidden">
       <Header />
       
       <main>
@@ -21,7 +22,9 @@ const Index = () => {
           <FeatureSection />
         </section>
         
-        <OrderForm />
+        <section id="order">
+          <OrderForm />
+        </section>
       </main>
       
       <Footer />

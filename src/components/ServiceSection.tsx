@@ -1,55 +1,163 @@
-import { Card, CardContent } from "@/components/ui/card";
-import { Star, Moon, Sun, Sparkles } from "lucide-react";
+import React from "react";
+import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
 
 const services = [
   {
-    icon: <Star className="h-8 w-8 text-black" />,
-    title: "Личный гороскоп",
-    description: "Подробный анализ вашей личности, сильных сторон и потенциальных жизненных вызовов на основе положения звезд в момент рождения."
+    id: 1,
+    title: "Базовая натальная карта",
+    description: "Индивидуальный анализ положения планет в момент вашего рождения. Вы узнаете о своих врожденных качествах, сильных сторонах и потенциальных вызовах.",
+    price: "2 900 ₽",
+    features: [
+      "Подробный PDF-отчет (15+ страниц)",
+      "Анализ положения планет и домов",
+      "Описание личности и характера",
+      "Срок выполнения: 2-3 дня"
+    ],
+    icon: "♈"
   },
   {
-    icon: <Moon className="h-8 w-8 text-black" />,
-    title: "Натальная карта",
-    description: "Профессиональный расчет и интерпретация натальной карты с детальным анализом всех домов, планет и аспектов."
+    id: 2,
+    title: "Расширенная натальная карта",
+    description: "Глубокий анализ вашей натальной карты с детальным разбором всех аспектов. Включает рекомендации для раскрытия вашего потенциала.",
+    price: "4 900 ₽",
+    features: [
+      "Подробный PDF-отчет (30+ страниц)",
+      "Анализ всех планет, домов и аспектов",
+      "Детальное описание личности и судьбы",
+      "Карьерные предрасположенности",
+      "Срок выполнения: 4-5 дней"
+    ],
+    icon: "♃",
+    featured: true
   },
   {
-    icon: <Sun className="h-8 w-8 text-black" />,
-    title: "Совместимость",
-    description: "Анализ совместимости с партнером, включающий сильные стороны и потенциальные сложности ваших отношений."
-  },
-  {
-    icon: <Sparkles className="h-8 w-8 text-black" />,
-    title: "Прогноз на год",
-    description: "Детальный прогноз основных событий и тенденций на ближайший год с рекомендациями по принятию важных решений."
+    id: 3,
+    title: "Прогностика на год",
+    description: "Детальный прогноз на предстоящий год. Узнайте о благоприятных периодах для начинаний и потенциальных вызовах.",
+    price: "5 900 ₽",
+    features: [
+      "Подробный PDF-отчет (25+ страниц)",
+      "Транзиты планет и их влияние",
+      "Прогрессии и дирекции",
+      "Персональные рекомендации",
+      "Срок выполнения: 5-7 дней"
+    ],
+    icon: "♄"
   }
 ];
 
 const ServiceSection = () => {
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6
+      }
+    }
+  };
+
   return (
-    <section className="w-full py-16 md:py-24 bg-apple-gray">
-      <div className="container mx-auto px-4 md:px-6">
-        <div className="max-w-3xl mx-auto text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Наши услуги</h2>
-          <p className="text-lg text-apple-darkgray">
-            Откройте силу звезд с нашими персонализированными астрологическими услугами
-          </p>
+    <div id="services" className="py-24 bg-white dark:bg-cosmic-black">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-16">
+          <motion.h2 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-3xl md:text-4xl font-bold mb-4 astro-text-gradient inline-block"
+          >
+            Наши астрологические услуги
+          </motion.h2>
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto"
+          >
+            Выберите подходящий вариант астрологического анализа, который раскроет перед вами тайны вашей судьбы и поможет найти ответы на важные вопросы.
+          </motion.p>
         </div>
-        
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          {services.map((service, index) => (
-            <Card key={index} className="border-none shadow-sm hover:shadow-md transition-shadow bg-white rounded-xl overflow-hidden">
-              <CardContent className="p-6">
-                <div className="mb-4 bg-apple-gray p-3 rounded-full inline-block">
+
+        <motion.div 
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12"
+        >
+          {services.map((service) => (
+            <motion.div
+              key={service.id}
+              variants={itemVariants}
+              className={`relative rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-xl ${
+                service.featured 
+                  ? "bg-gradient-to-br from-cosmic-purple to-cosmic-darkPurple border-2 border-cosmic-purple/50" 
+                  : "bg-white dark:bg-cosmic-gray/10 border border-gray-200 dark:border-cosmic-gray/20"
+              }`}
+            >
+              {service.featured && (
+                <div className="absolute top-0 right-0 bg-cosmic-purple text-white px-4 py-1 rounded-bl-lg text-sm font-medium">
+                  Популярное
+                </div>
+              )}
+              
+              <div className="p-8">
+                <div className={`text-4xl mb-6 ${service.featured ? "text-white" : "text-cosmic-purple"}`}>
                   {service.icon}
                 </div>
-                <h3 className="text-xl font-semibold mb-2">{service.title}</h3>
-                <p className="text-apple-darkgray">{service.description}</p>
-              </CardContent>
-            </Card>
+                <h3 className={`text-xl font-bold mb-4 ${service.featured ? "text-white" : "text-gray-800 dark:text-white"}`}>
+                  {service.title}
+                </h3>
+                <p className={`mb-6 ${service.featured ? "text-white/80" : "text-gray-600 dark:text-gray-300"}`}>
+                  {service.description}
+                </p>
+                <div className={`text-2xl font-bold mb-6 ${service.featured ? "text-white" : "text-cosmic-purple"}`}>
+                  {service.price}
+                </div>
+                
+                <ul className="space-y-3 mb-8">
+                  {service.features.map((feature, index) => (
+                    <li 
+                      key={index}
+                      className={`flex items-start ${service.featured ? "text-white/90" : "text-gray-600 dark:text-gray-300"}`}
+                    >
+                      <span className="mr-2 mt-1 text-cosmic-purple">✓</span>
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+                
+                <Button 
+                  className={`w-full ${
+                    service.featured 
+                      ? "bg-white text-cosmic-purple hover:bg-gray-100" 
+                      : "bg-cosmic-purple hover:bg-cosmic-deepPurple text-white"
+                  }`}
+                  onClick={() => document.getElementById("order")?.scrollIntoView({ behavior: "smooth" })}
+                >
+                  Заказать
+                </Button>
+              </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
-    </section>
+    </div>
   );
 };
 
