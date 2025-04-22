@@ -1,161 +1,114 @@
-import React from "react";
-import { Button } from "@/components/ui/button";
-import { motion } from "framer-motion";
 
-const services = [
-  {
-    id: 1,
-    title: "Базовая натальная карта",
-    description: "Индивидуальный анализ положения планет в момент вашего рождения. Вы узнаете о своих врожденных качествах, сильных сторонах и потенциальных вызовах.",
-    price: "2 900 ₽",
-    features: [
-      "Подробный PDF-отчет (15+ страниц)",
-      "Анализ положения планет и домов",
-      "Описание личности и характера",
-      "Срок выполнения: 2-3 дня"
-    ],
-    icon: "♈"
-  },
-  {
-    id: 2,
-    title: "Расширенная натальная карта",
-    description: "Глубокий анализ вашей натальной карты с детальным разбором всех аспектов. Включает рекомендации для раскрытия вашего потенциала.",
-    price: "4 900 ₽",
-    features: [
-      "Подробный PDF-отчет (30+ страниц)",
-      "Анализ всех планет, домов и аспектов",
-      "Детальное описание личности и судьбы",
-      "Карьерные предрасположенности",
-      "Срок выполнения: 4-5 дней"
-    ],
-    icon: "♃",
-    featured: true
-  },
-  {
-    id: 3,
-    title: "Прогностика на год",
-    description: "Детальный прогноз на предстоящий год. Узнайте о благоприятных периодах для начинаний и потенциальных вызовах.",
-    price: "5 900 ₽",
-    features: [
-      "Подробный PDF-отчет (25+ страниц)",
-      "Транзиты планет и их влияние",
-      "Прогрессии и дирекции",
-      "Персональные рекомендации",
-      "Срок выполнения: 5-7 дней"
-    ],
-    icon: "♄"
-  }
-];
+import React from "react";
+import { CheckCircle, Star, Moon, ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const ServiceSection = () => {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6
-      }
-    }
-  };
+  const services = [
+    {
+      title: "Базовая натальная карта",
+      price: "1 900 ₽",
+      description: "Полный анализ расположения планет на момент вашего рождения с базовой интерпретацией",
+      features: [
+        "Расчет точной натальной карты",
+        "Анализ положения планет",
+        "Анализ восходящего знака",
+        "Базовая интерпретация",
+        "PDF отчет"
+      ],
+      icon: <Star className="w-16 h-16 text-cosmic-purple animate-pulse" />,
+      popular: false,
+    },
+    {
+      title: "Премиум натальная карта",
+      price: "3 900 ₽",
+      description: "Углубленный анализ с детальной интерпретацией и персональными рекомендациями",
+      features: [
+        "Все из базового пакета",
+        "Детальный анализ аспектов планет",
+        "Анализ лунных узлов",
+        "Личные рекомендации и прогнозы",
+        "Дополнительная 30-минутная консультация",
+        "Премиум PDF отчет"
+      ],
+      icon: <Moon className="w-16 h-16 text-cosmic-blue animate-glow" />,
+      popular: true,
+    },
+    {
+      title: "Годовой прогноз",
+      price: "5 900 ₽",
+      description: "Комплексный анализ натальной карты и прогнозирование на год вперед",
+      features: [
+        "Все из премиум пакета",
+        "Прогноз на 12 месяцев вперед",
+        "Анализ транзитов планет",
+        "Периоды благоприятных возможностей",
+        "Стратегии для преодоления сложных периодов",
+        "Две 30-минутных консультации",
+        "VIP PDF отчет с ежемесячной детализацией"
+      ],
+      icon: <div className="w-16 h-16 rounded-full bg-gradient-to-br from-cosmic-purple to-cosmic-blue animate-spin-slow"></div>,
+      popular: false,
+    },
+  ];
 
   return (
-    <div id="services" className="py-24 bg-white dark:bg-cosmic-black">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <motion.h2 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-3xl md:text-4xl font-bold mb-4 astro-text-gradient inline-block"
-          >
-            Наши астрологические услуги
-          </motion.h2>
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto"
-          >
-            Выберите подходящий вариант астрологического анализа, который раскроет перед вами тайны вашей судьбы и поможет найти ответы на важные вопросы.
-          </motion.p>
-        </div>
+    <div className="py-20 container mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="text-center mb-16">
+        <h2 className="text-3xl md:text-5xl font-bold mb-4 text-white">
+          Наши <span className="astro-text-gradient">услуги</span>
+        </h2>
+        <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+          Выберите подходящий вариант астрологического анализа и откройте двери к пониманию своей судьбы
+        </p>
+      </div>
 
-        <motion.div 
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12"
-        >
-          {services.map((service) => (
-            <motion.div
-              key={service.id}
-              variants={itemVariants}
-              className={`relative rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-xl ${
-                service.featured 
-                  ? "bg-gradient-to-br from-cosmic-purple to-cosmic-darkPurple border-2 border-cosmic-purple/50" 
-                  : "bg-white dark:bg-cosmic-gray/10 border border-gray-200 dark:border-cosmic-gray/20"
-              }`}
-            >
-              {service.featured && (
-                <div className="absolute top-0 right-0 bg-cosmic-purple text-white px-4 py-1 rounded-bl-lg text-sm font-medium">
-                  Популярное
-                </div>
-              )}
-              
-              <div className="p-8">
-                <div className={`text-4xl mb-6 ${service.featured ? "text-white" : "text-cosmic-purple"}`}>
-                  {service.icon}
-                </div>
-                <h3 className={`text-xl font-bold mb-4 ${service.featured ? "text-white" : "text-gray-800 dark:text-white"}`}>
-                  {service.title}
-                </h3>
-                <p className={`mb-6 ${service.featured ? "text-white/80" : "text-gray-600 dark:text-gray-300"}`}>
-                  {service.description}
-                </p>
-                <div className={`text-2xl font-bold mb-6 ${service.featured ? "text-white" : "text-cosmic-purple"}`}>
-                  {service.price}
-                </div>
-                
-                <ul className="space-y-3 mb-8">
-                  {service.features.map((feature, index) => (
-                    <li 
-                      key={index}
-                      className={`flex items-start ${service.featured ? "text-white/90" : "text-gray-600 dark:text-gray-300"}`}
-                    >
-                      <span className="mr-2 mt-1 text-cosmic-purple">✓</span>
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-                
-                <Button 
-                  className={`w-full ${
-                    service.featured 
-                      ? "bg-white text-cosmic-purple hover:bg-gray-100" 
-                      : "bg-cosmic-purple hover:bg-cosmic-deepPurple text-white"
-                  }`}
-                  onClick={() => document.getElementById("order")?.scrollIntoView({ behavior: "smooth" })}
-                >
-                  Заказать
-                </Button>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {services.map((service, index) => (
+          <div 
+            key={index} 
+            className={`relative cosmic-card p-6 md:p-8 rounded-xl flex flex-col h-full ${
+              service.popular ? 'border-cosmic-purple border-2 shadow-lg shadow-cosmic-purple/20' : ''
+            }`}
+          >
+            {service.popular && (
+              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-cosmic-purple text-white px-4 py-1 rounded-full text-sm font-medium">
+                Популярный выбор
               </div>
-            </motion.div>
-          ))}
-        </motion.div>
+            )}
+            
+            <div className="flex justify-center mb-6">{service.icon}</div>
+            
+            <h3 className="text-2xl font-bold text-white mb-2 text-center">{service.title}</h3>
+            
+            <div className="text-3xl font-bold text-center mb-4 text-cosmic-purple">{service.price}</div>
+            
+            <p className="text-gray-300 mb-6 text-center">{service.description}</p>
+            
+            <div className="mb-8 flex-grow">
+              <ul className="space-y-3">
+                {service.features.map((feature, i) => (
+                  <li key={i} className="flex items-start">
+                    <CheckCircle className="h-5 w-5 text-cosmic-purple shrink-0 mr-2" />
+                    <span className="text-gray-300">{feature}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            
+            <Button 
+              className={`mt-auto w-full py-6 rounded-full group ${
+                service.popular 
+                  ? 'bg-cosmic-purple hover:bg-cosmic-deepPurple' 
+                  : 'bg-transparent border-2 border-cosmic-purple/50 hover:bg-cosmic-purple/10'
+              } text-white transition-all duration-300`}
+              onClick={() => document.getElementById("order")?.scrollIntoView({ behavior: "smooth" })}
+            >
+              <span>Выбрать</span>
+              <ArrowRight className="ml-2 h-5 w-5 transform group-hover:translate-x-1 transition-transform" />
+            </Button>
+          </div>
+        ))}
       </div>
     </div>
   );

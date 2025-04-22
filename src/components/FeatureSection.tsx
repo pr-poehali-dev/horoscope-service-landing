@@ -1,115 +1,94 @@
-import React from "react";
-import { motion } from "framer-motion";
 
-const features = [
-  {
-    id: 1,
-    title: "Точность расчетов",
-    description: "Используем высокоточные астрономические алгоритмы NASA для расчета положения планет в момент вашего рождения с точностью до секунды.",
-    icon: "⭐"
-  },
-  {
-    id: 2,
-    title: "Индивидуальный подход",
-    description: "Каждая карта и гороскоп интерпретируются лично опытным астрологом, а не генерируются автоматически.",
-    icon: "👤"
-  },
-  {
-    id: 3,
-    title: "Детальная интерпретация",
-    description: "Вы получите глубокий анализ всех аспектов вашей жизни: личность, отношения, карьера, здоровье и духовное развитие.",
-    icon: "📊"
-  },
-  {
-    id: 4,
-    title: "Современный подход",
-    description: "Сочетаем классические астрологические техники с современными методиками для максимально точных прогнозов.",
-    icon: "🔮"
-  },
-  {
-    id: 5,
-    title: "Конфиденциальность",
-    description: "Гарантируем полную конфиденциальность всех предоставленных вами данных и результатов астрологических расчетов.",
-    icon: "🔒"
-  },
-  {
-    id: 6,
-    title: "Постоянная поддержка",
-    description: "После получения расчетов вы можете задать дополнительные вопросы для уточнения интерпретации вашей карты.",
-    icon: "💬"
-  }
-];
+import React from "react";
+import { Clock, Shield, BarChart, Sparkles, Compass, Star } from "lucide-react";
 
 const FeatureSection = () => {
+  const features = [
+    {
+      icon: <Clock className="w-12 h-12 text-cosmic-purple" />,
+      title: "Быстрый результат",
+      description: "Получите детальную натальную карту в течение 24 часов после заказа"
+    },
+    {
+      icon: <Shield className="w-12 h-12 text-cosmic-purple" />,
+      title: "Конфиденциальность",
+      description: "Ваши личные данные надежно защищены и используются только для расчетов"
+    },
+    {
+      icon: <BarChart className="w-12 h-12 text-cosmic-purple" />,
+      title: "Точность данных",
+      description: "Используем высокоточные астрономические алгоритмы для расчета положения планет"
+    },
+    {
+      icon: <Sparkles className="w-12 h-12 text-cosmic-blue" />,
+      title: "Персонализация",
+      description: "Каждая натальная карта уникальна и создается индивидуально для вас"
+    },
+    {
+      icon: <Compass className="w-12 h-12 text-cosmic-blue" />,
+      title: "Практические рекомендации",
+      description: "Получите конкретные советы для применения знаний на практике"
+    },
+    {
+      icon: <Star className="w-12 h-12 text-cosmic-blue" />,
+      title: "Поддержка специалиста",
+      description: "Консультация с профессиональным астрологом для разъяснения всех нюансов"
+    }
+  ];
+
   return (
-    <div id="features" className="py-24 bg-gray-50 dark:bg-cosmic-black/95 cosmic-bg">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="text-center mb-16">
-          <motion.h2 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-3xl md:text-4xl font-bold mb-4 astro-text-gradient inline-block"
-          >
-            Почему выбирают нас
-          </motion.h2>
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto"
-          >
-            Наш многолетний опыт и индивидуальный подход к каждому клиенту гарантируют высокое качество астрологического анализа.
-          </motion.p>
-        </div>
+    <div className="py-20 container mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="text-center mb-16">
+        <h2 className="text-3xl md:text-5xl font-bold mb-4 text-white">
+          Почему <span className="astro-text-gradient">выбирают нас</span>
+        </h2>
+        <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+          Наша команда астрологов использует современные технологии для создания точных и информативных натальных карт
+        </p>
+      </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {features.map((feature, index) => (
-            <motion.div
-              key={feature.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="cosmic-card group rounded-xl p-8 transition-all duration-300"
-            >
-              <div className="w-14 h-14 rounded-lg flex items-center justify-center text-2xl bg-cosmic-purple/10 group-hover:bg-cosmic-purple/20 mb-6 transition-all duration-300">
-                <span>{feature.icon}</span>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {features.map((feature, index) => (
+          <div 
+            key={index} 
+            className="cosmic-card p-8 rounded-xl transform hover:-translate-y-2 transition-all duration-300"
+          >
+            <div className="mb-6 flex justify-center">
+              <div className="relative">
+                {feature.icon}
+                <div className="absolute -inset-2 bg-gradient-to-r from-cosmic-purple to-cosmic-blue rounded-full opacity-30 blur-lg -z-10"></div>
               </div>
-              <h3 className="text-xl font-bold mb-4 text-gray-800 dark:text-white group-hover:text-cosmic-purple transition-colors duration-300">
-                {feature.title}
-              </h3>
-              <p className="text-gray-600 dark:text-gray-300">
-                {feature.description}
-              </p>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Testimonial */}
-        <motion.div 
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7 }}
-          className="mt-20 bg-white dark:bg-cosmic-gray/10 rounded-2xl p-8 md:p-12 shadow-lg border border-gray-100 dark:border-cosmic-gray/20"
-        >
-          <div className="flex flex-col md:flex-row items-center">
-            <div className="w-24 h-24 md:w-32 md:h-32 rounded-full bg-gray-200 dark:bg-cosmic-gray/30 overflow-hidden mb-6 md:mb-0 md:mr-8 flex-shrink-0">
-              <img src="/placeholder.svg" alt="Клиент" className="w-full h-full object-cover" />
             </div>
-            <div>
-              <div className="text-cosmic-purple text-3xl mb-4">★★★★★</div>
-              <p className="text-lg italic text-gray-600 dark:text-gray-300 mb-6">
-                "Натальная карта, составленная вашими астрологами, поразила меня своей точностью. Она не только подтвердила мои наблюдения о себе, но и открыла новые грани моей личности. Теперь я лучше понимаю свои сильные стороны и знаю, как использовать их для достижения целей. Спасибо за вашу работу!"
-              </p>
-              <div className="font-semibold text-gray-900 dark:text-white">Елена Смирнова</div>
-              <div className="text-gray-500 dark:text-gray-400">Москва</div>
-            </div>
+            
+            <h3 className="text-xl font-bold text-white mb-3 text-center">{feature.title}</h3>
+            
+            <p className="text-gray-300 text-center">{feature.description}</p>
           </div>
-        </motion.div>
+        ))}
+      </div>
+
+      {/* Анимированный декоративный элемент */}
+      <div className="mt-20 relative">
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="w-64 h-64 rounded-full bg-cosmic-purple/10 animate-pulse"></div>
+        </div>
+        
+        <div className="text-center relative z-10 p-12 max-w-3xl mx-auto cosmic-card rounded-2xl">
+          <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">
+            Более 10,000 клиентов уже раскрыли свой потенциал
+          </h3>
+          <p className="text-gray-300 text-lg mb-6">
+            Присоединяйтесь к тысячам людей, которые используют астрологические знания для улучшения своей жизни
+          </p>
+          <div className="flex justify-center space-x-2">
+            {[1, 2, 3, 4, 5].map((_, i) => (
+              <Star key={i} className="w-6 h-6 text-yellow-400 fill-yellow-400" />
+            ))}
+          </div>
+          <p className="text-lg font-medium text-cosmic-purple mt-2">
+            4.9 из 5 на основе 856 отзывов
+          </p>
+        </div>
       </div>
     </div>
   );

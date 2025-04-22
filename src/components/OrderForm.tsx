@@ -1,274 +1,321 @@
-import React, { useState } from "react";
-import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-} from "@/components/ui/card";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
-import { CheckCircle } from "lucide-react";
 
-const formSchema = z.object({
-  name: z.string().min(2, { message: "Имя должно содержать не менее 2 символов" }),
-  email: z.string().email({ message: "Введите корректный email" }),
-  phone: z.string().min(10, { message: "Введите корректный номер телефона" }),
-  birthDate: z.string().min(1, { message: "Выберите дату рождения" }),
-  birthTime: z.string().min(1, { message: "Введите время рождения" }),
-  birthPlace: z.string().min(2, { message: "Введите место рождения" }),
-  package: z.string().min(1, { message: "Выберите пакет услуг" }),
-});
+import React, { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { format } from "date-fns";
+import { ru } from "date-fns/locale";
+import { CalendarIcon, ArrowRight } from "lucide-react";
 
 const OrderForm = () => {
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [date, setDate] = useState<Date | undefined>();
+  const [step, setStep] = useState(1);
+  const totalSteps = 3;
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: "",
-      email: "",
-      phone: "",
-      birthDate: "",
-      birthTime: "",
-      birthPlace: "",
-      package: "basic",
-    },
-  });
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (step < totalSteps) {
+      setStep(prev => prev + 1);
+    } else {
+      // Здесь будет логика отправки формы
+      alert("Спасибо! Ваш заказ принят. Мы свяжемся с вами в ближайшее время.");
+      setStep(1);
+    }
+  };
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-    // Here you would typically send the data to your backend
-    setTimeout(() => {
-      setIsSubmitted(true);
-    }, 1000);
-  }
-
-  if (isSubmitted) {
-    return (
-      <motion.div
-        id="order"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="py-24 bg-white dark:bg-cosmic-black"
-      >
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <Card className="max-w-2xl mx-auto bg-white dark:bg-cosmic-gray/10 border-none shadow-xl">
-            <CardContent className="p-12 text-center">
-              <div className="mb-6 flex justify-center">
-                <div className="w-20 h-20 rounded-full bg-green-100 dark:bg-green-900/20 flex items-center justify-center">
-                  <CheckCircle className="w-10 h-10 text-green-600 dark:text-green-400" />
-                </div>
-              </div>
-              <h2 className="text-2xl font-bold mb-4 text-gray-800 dark:text-white">Заказ принят!</h2>
-              <p className="text-gray-600 dark:text-gray-300 mb-8">
-                Спасибо за ваш заказ. Мы уже начали расчет вашей натальной карты. В ближайшее время наш специалист свяжется с вами для уточнения деталей.
-              </p>
-              <Button
-                className="bg-cosmic-purple hover:bg-cosmic-deepPurple text-white"
-                onClick={() => setIsSubmitted(false)}
-              >
-                Оформить новый заказ
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
-      </motion.div>
-    );
-  }
+  const goBack = () => {
+    if (step > 1) {
+      setStep(prev => prev - 1);
+    }
+  };
 
   return (
-    <div id="order" className="py-24 bg-white dark:bg-cosmic-black">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <motion.h2 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-3xl md:text-4xl font-bold mb-4 astro-text-gradient inline-block"
-          >
-            Заказать натальную карту
-          </motion.h2>
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto"
-          >
-            Заполните форму ниже для расчета вашей персональной натальной карты. Чем точнее информация, тем достовернее будет результат.
-          </motion.p>
+    <div className="py-20 container mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="text-center mb-10">
+        <h2 className="text-3xl md:text-5xl font-bold mb-4 text-white">
+          <span className="astro-text-gradient">Рассчитать</span> натальную карту
+        </h2>
+        <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+          Заполните данные для точного расчета вашей персональной натальной карты
+        </p>
+      </div>
+
+      <div className="max-w-3xl mx-auto">
+        {/* Индикатор прогресса */}
+        <div className="mb-10">
+          <div className="flex justify-between items-center">
+            {Array.from({ length: totalSteps }).map((_, i) => (
+              <React.Fragment key={i}>
+                <div className="flex flex-col items-center">
+                  <div 
+                    className={`w-10 h-10 rounded-full flex items-center justify-center z-10 
+                      ${i + 1 <= step 
+                        ? 'bg-cosmic-purple text-white' 
+                        : 'bg-gray-700 text-gray-300'}`}
+                  >
+                    {i + 1}
+                  </div>
+                  <div className="mt-2 text-sm text-gray-300">
+                    {i === 0 ? 'Личные данные' : i === 1 ? 'Выбор услуги' : 'Контакты'}
+                  </div>
+                </div>
+                
+                {i < totalSteps - 1 && (
+                  <div 
+                    className={`h-1 flex-1 mx-2 
+                      ${i + 1 < step ? 'bg-cosmic-purple' : 'bg-gray-700'}`}
+                  ></div>
+                )}
+              </React.Fragment>
+            ))}
+          </div>
         </div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        >
-          <Card className="max-w-3xl mx-auto bg-white dark:bg-cosmic-gray/10 border-none shadow-xl">
-            <CardContent className="p-8">
-              <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <FormField
-                      control={form.control}
-                      name="name"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-gray-700 dark:text-gray-300">Имя</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Ваше имя" {...field} className="bg-gray-50 dark:bg-cosmic-black/20" />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="email"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-gray-700 dark:text-gray-300">Email</FormLabel>
-                          <FormControl>
-                            <Input placeholder="example@mail.com" {...field} className="bg-gray-50 dark:bg-cosmic-black/20" />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="phone"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-gray-700 dark:text-gray-300">Телефон</FormLabel>
-                          <FormControl>
-                            <Input placeholder="+7 (___) ___-__-__" {...field} className="bg-gray-50 dark:bg-cosmic-black/20" />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="birthDate"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-gray-700 dark:text-gray-300">Дата рождения</FormLabel>
-                          <FormControl>
-                            <Input type="date" {...field} className="bg-gray-50 dark:bg-cosmic-black/20" />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="birthTime"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-gray-700 dark:text-gray-300">Время рождения</FormLabel>
-                          <FormControl>
-                            <Input type="time" {...field} className="bg-gray-50 dark:bg-cosmic-black/20" />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="birthPlace"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-gray-700 dark:text-gray-300">Место рождения</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Город, страна" {...field} className="bg-gray-50 dark:bg-cosmic-black/20" />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-
-                  <FormField
-                    control={form.control}
-                    name="package"
-                    render={({ field }) => (
-                      <FormItem className="space-y-4">
-                        <FormLabel className="text-gray-700 dark:text-gray-300">Выберите пакет услуг</FormLabel>
-                        <FormControl>
-                          <RadioGroup
-                            onValueChange={field.onChange}
-                            defaultValue={field.value}
-                            className="grid grid-cols-1 md:grid-cols-3 gap-4"
-                          >
-                            <FormItem className="flex flex-col space-y-1 p-4 rounded-lg border border-gray-200 dark:border-cosmic-gray/20 hover:border-cosmic-purple/50 dark:hover:border-cosmic-purple/50 cursor-pointer transition-all duration-200">
-                              <FormControl>
-                                <RadioGroupItem value="basic" className="sr-only" />
-                              </FormControl>
-                              <div className="font-semibold text-gray-800 dark:text-white">Базовая</div>
-                              <div className="text-sm text-gray-500 dark:text-gray-400">2 900 ₽</div>
-                            </FormItem>
-                            
-                            <FormItem className="flex flex-col space-y-1 p-4 rounded-lg border-2 border-cosmic-purple bg-cosmic-purple/5 dark:bg-cosmic-purple/10 hover:bg-cosmic-purple/10 dark:hover:bg-cosmic-purple/20 cursor-pointer transition-all duration-200">
-                              <FormControl>
-                                <RadioGroupItem value="extended" className="sr-only" />
-                              </FormControl>
-                              <div className="font-semibold text-gray-800 dark:text-white">Расширенная</div>
-                              <div className="text-sm text-gray-500 dark:text-gray-400">4 900 ₽</div>
-                            </FormItem>
-                            
-                            <FormItem className="flex flex-col space-y-1 p-4 rounded-lg border border-gray-200 dark:border-cosmic-gray/20 hover:border-cosmic-purple/50 dark:hover:border-cosmic-purple/50 cursor-pointer transition-all duration-200">
-                              <FormControl>
-                                <RadioGroupItem value="yearly" className="sr-only" />
-                              </FormControl>
-                              <div className="font-semibold text-gray-800 dark:text-white">Годовой прогноз</div>
-                              <div className="text-sm text-gray-500 dark:text-gray-400">5 900 ₽</div>
-                            </FormItem>
-                          </RadioGroup>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
+        
+        <div className="cosmic-card p-8 rounded-2xl">
+          <form onSubmit={handleSubmit}>
+            {/* Шаг 1: Личные данные */}
+            {step === 1 && (
+              <div className="space-y-6 animate-fade-in">
+                <h3 className="text-2xl font-bold text-white mb-6">Личные данные для расчета</h3>
+                
+                <div className="space-y-3">
+                  <Label htmlFor="name" className="text-white">Ваше имя</Label>
+                  <Input 
+                    id="name" 
+                    placeholder="Введите ваше имя" 
+                    className="bg-cosmic-gray/20 border-cosmic-purple/30 text-white" 
+                    required
                   />
-
-                  <div className="pt-4">
-                    <Button 
-                      type="submit" 
-                      className="w-full bg-cosmic-purple hover:bg-cosmic-deepPurple text-white py-6 text-lg font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 cosmic-pulse"
-                    >
-                      Заказать расчет натальной карты
-                    </Button>
+                </div>
+                
+                <div className="space-y-3">
+                  <Label htmlFor="birthdate" className="text-white">Дата рождения</Label>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className="w-full justify-start text-left font-normal bg-cosmic-gray/20 border-cosmic-purple/30 text-white"
+                      >
+                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        {date ? format(date, 'PPP', { locale: ru }) : "Выберите дату"}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0 bg-cosmic-black border-cosmic-purple/30">
+                      <Calendar
+                        mode="single"
+                        selected={date}
+                        onSelect={setDate}
+                        initialFocus
+                        className="text-white"
+                      />
+                    </PopoverContent>
+                  </Popover>
+                </div>
+                
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-3">
+                    <Label htmlFor="birthTime" className="text-white">Время рождения</Label>
+                    <Input 
+                      id="birthTime" 
+                      type="time" 
+                      className="bg-cosmic-gray/20 border-cosmic-purple/30 text-white" 
+                      required
+                    />
                   </div>
-                </form>
-              </Form>
-            </CardContent>
-          </Card>
-        </motion.div>
+                  
+                  <div className="space-y-3">
+                    <Label htmlFor="birthCity" className="text-white">Место рождения</Label>
+                    <Input 
+                      id="birthCity" 
+                      placeholder="Город рождения" 
+                      className="bg-cosmic-gray/20 border-cosmic-purple/30 text-white" 
+                      required
+                    />
+                  </div>
+                </div>
+                
+                <div className="space-y-3">
+                  <Label className="text-white">Пол</Label>
+                  <RadioGroup defaultValue="female">
+                    <div className="flex space-x-4">
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem 
+                          value="female" 
+                          id="female" 
+                          className="border-cosmic-purple/50 text-cosmic-purple"
+                        />
+                        <Label htmlFor="female" className="text-white">Женский</Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem 
+                          value="male" 
+                          id="male" 
+                          className="border-cosmic-purple/50 text-cosmic-purple"
+                        />
+                        <Label htmlFor="male" className="text-white">Мужской</Label>
+                      </div>
+                    </div>
+                  </RadioGroup>
+                </div>
+              </div>
+            )}
+            
+            {/* Шаг 2: Выбор услуги */}
+            {step === 2 && (
+              <div className="space-y-6 animate-fade-in">
+                <h3 className="text-2xl font-bold text-white mb-6">Выберите тип натальной карты</h3>
+                
+                <RadioGroup defaultValue="premium">
+                  <div className="space-y-4">
+                    <div className="flex items-center space-x-3 p-4 border border-cosmic-purple/30 rounded-lg bg-cosmic-gray/20">
+                      <RadioGroupItem 
+                        value="basic" 
+                        id="basic" 
+                        className="border-cosmic-purple/50 text-cosmic-purple"
+                      />
+                      <div className="flex-1">
+                        <Label htmlFor="basic" className="text-lg font-medium text-white">
+                          Базовая натальная карта
+                        </Label>
+                        <p className="text-gray-300">Полный анализ основных аспектов</p>
+                      </div>
+                      <div className="text-lg font-semibold text-cosmic-purple">1 900 ₽</div>
+                    </div>
+                    
+                    <div className="flex items-center space-x-3 p-4 border-2 border-cosmic-purple rounded-lg bg-cosmic-gray/20 relative">
+                      <div className="absolute -top-3 left-4 bg-cosmic-purple text-white px-2 py-0.5 rounded-md text-xs">
+                        Популярный выбор
+                      </div>
+                      <RadioGroupItem 
+                        value="premium" 
+                        id="premium" 
+                        className="border-cosmic-purple/50 text-cosmic-purple"
+                      />
+                      <div className="flex-1">
+                        <Label htmlFor="premium" className="text-lg font-medium text-white">
+                          Премиум натальная карта
+                        </Label>
+                        <p className="text-gray-300">Детальный анализ с рекомендациями</p>
+                      </div>
+                      <div className="text-lg font-semibold text-cosmic-purple">3 900 ₽</div>
+                    </div>
+                    
+                    <div className="flex items-center space-x-3 p-4 border border-cosmic-purple/30 rounded-lg bg-cosmic-gray/20">
+                      <RadioGroupItem 
+                        value="yearly" 
+                        id="yearly" 
+                        className="border-cosmic-purple/50 text-cosmic-purple"
+                      />
+                      <div className="flex-1">
+                        <Label htmlFor="yearly" className="text-lg font-medium text-white">
+                          Годовой прогноз
+                        </Label>
+                        <p className="text-gray-300">Натальная карта + прогноз на год</p>
+                      </div>
+                      <div className="text-lg font-semibold text-cosmic-purple">5 900 ₽</div>
+                    </div>
+                  </div>
+                </RadioGroup>
+                
+                <div className="space-y-3 mt-6">
+                  <Label htmlFor="additional" className="text-white">Дополнительные опции</Label>
+                  <Select>
+                    <SelectTrigger className="w-full bg-cosmic-gray/20 border-cosmic-purple/30 text-white">
+                      <SelectValue placeholder="Выберите дополнительные опции" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-cosmic-black border-cosmic-purple/30">
+                      <SelectItem value="consultation">Дополнительная консультация (+1500 ₽)</SelectItem>
+                      <SelectItem value="report">Расширенный отчет (+800 ₽)</SelectItem>
+                      <SelectItem value="compatibility">Анализ совместимости (+2000 ₽)</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            )}
+            
+            {/* Шаг 3: Контактные данные */}
+            {step === 3 && (
+              <div className="space-y-6 animate-fade-in">
+                <h3 className="text-2xl font-bold text-white mb-6">Контактные данные</h3>
+                
+                <div className="space-y-3">
+                  <Label htmlFor="email" className="text-white">Электронная почта</Label>
+                  <Input 
+                    id="email" 
+                    type="email" 
+                    placeholder="example@email.com" 
+                    className="bg-cosmic-gray/20 border-cosmic-purple/30 text-white" 
+                    required
+                  />
+                  <p className="text-sm text-gray-400">На этот адрес мы отправим вашу натальную карту</p>
+                </div>
+                
+                <div className="space-y-3">
+                  <Label htmlFor="phone" className="text-white">Номер телефона</Label>
+                  <Input 
+                    id="phone" 
+                    type="tel" 
+                    placeholder="+7 (___) ___-__-__" 
+                    className="bg-cosmic-gray/20 border-cosmic-purple/30 text-white"
+                  />
+                </div>
+                
+                <div className="space-y-3">
+                  <Label htmlFor="comments" className="text-white">Комментарии (необязательно)</Label>
+                  <textarea 
+                    id="comments" 
+                    className="w-full rounded-md px-3 py-2 bg-cosmic-gray/20 border border-cosmic-purple/30 text-white"
+                    rows={4}
+                    placeholder="Ваши пожелания или вопросы к астрологу"
+                  ></textarea>
+                </div>
+                
+                {/* Итоговая сумма */}
+                <div className="flex justify-between items-center p-4 border border-cosmic-purple/30 rounded-lg bg-cosmic-purple/10">
+                  <div className="text-white font-medium">Итоговая стоимость:</div>
+                  <div className="text-2xl font-bold text-cosmic-purple">3 900 ₽</div>
+                </div>
+              </div>
+            )}
+
+            <div className="flex justify-between mt-8">
+              {step > 1 ? (
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  onClick={goBack}
+                  className="border-cosmic-purple/50 text-white hover:bg-cosmic-purple/10"
+                >
+                  Назад
+                </Button>
+              ) : (
+                <div></div>
+              )}
+              
+              <Button 
+                type="submit" 
+                className="bg-gradient-to-r from-cosmic-purple to-cosmic-deepPurple hover:opacity-90 text-white px-8 py-6 rounded-full shadow-lg shadow-cosmic-purple/20 hover:shadow-cosmic-purple/40 transition-all duration-300 transform hover:scale-105 group"
+              >
+                {step === totalSteps ? 'Отправить заказ' : 'Продолжить'}
+                <ArrowRight className="ml-2 h-5 w-5 transform group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </div>
+          </form>
+        </div>
+        
+        {/* Дополнительный продающий элемент */}
+        <div className="mt-12 p-6 cosmic-card rounded-xl text-center">
+          <div className="text-cosmic-purple text-lg font-medium mb-2">🔥 Специальное предложение</div>
+          <h3 className="text-xl text-white font-bold mb-3">При заказе натальной карты сегодня</h3>
+          <p className="text-gray-300 mb-4">
+            Получите бесплатный мини-анализ совместимости с партнером в подарок (экономия 1000 ₽)
+          </p>
+          <div className="text-sm text-gray-400">Предложение действует до {format(new Date(new Date().setDate(new Date().getDate() + 3)), 'd MMMM', { locale: ru })}</div>
+        </div>
       </div>
     </div>
   );
